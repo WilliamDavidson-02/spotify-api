@@ -1,3 +1,20 @@
+:root {
+  --primary-green: "#1DB954";
+
+  --secondary-black: "#000000";
+  --secondary-light-black: "#191414";
+  --secondary-white: "#ffffff";
+
+  --neutral-light-gray: "#B2B2B2";
+  --neutral-gray: "#777777";
+  --neutral-dark-gray: "#535353";
+}
+
 * {
   box-sizing: border-box;
+}
+
+button {
+  outline: none;
+  cursor: pointer;
 }
