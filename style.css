@@ -49,6 +49,11 @@ header {
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
 }
 
 .search-container {
@@ -59,6 +64,19 @@ header {
   border: 1px solid var(--neutral-dark-gray);
   background: var(--secondary-light-black);
   width: fit-content;
+}
+
+.login {
+  background: none;
+  border: none;
+  color: var(--neutral-gray);
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+
+.login:hover {
+  transition: color 0.3s ease-in-out;
+  color: var(--neutral-light-gray);
 }
 
 .search-btn {
@@ -81,6 +99,8 @@ header {
 .result-container {
   max-width: 1000px;
   padding: 24px;
+  display: flex;
+  gap: 16px;
 }
 
 .artist-container {
@@ -124,4 +144,63 @@ header {
   box-shadow: var(--secondary-dark-black) 0px 5px 15px;
   object-fit: cover;
   object-position: center;
+}
+
+.top-tracks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.track-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--neutral-light-gray);
+  cursor: pointer;
+  transition: color 0.2s ease-out, background 0.2s ease-out;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.track-container:hover {
+  transition: color 0.2s ease-out, background 0.2s ease-out;
+  background: var(--secondary-light-black);
+  color: var(--secondary-white);
+}
+
+.track-name {
+  color: var(--secondary-white);
+}
+
+.track-artists-container {
+  display: flex;
+  gap: 5px;
+}
+
+.explicit {
+  color: var(--secondary-light-black);
+  background: var(--neutral-light-gray);
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 0.8rem;
+  height: 15px;
+  width: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.artist-name-sm {
+  transition: 0.2s ease-in;
+  cursor: pointer;
+  color: var(--neutral-light-gray);
+}
+
+.artist-name-sm:hover {
+  transition: 0.2s ease-in;
+  color: var(--secondary-white);
+  text-decoration: underline;
 }
