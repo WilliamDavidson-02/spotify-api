@@ -1,5 +1,6 @@
 const searchForm = document.querySelector("#search-form");
 const resultContainer = document.querySelector("#result-container");
+const recentSearch = document.querySelector("#recent-search");
 const loginBtn = document.querySelector("#login");
 const refreshTokenBtn = document.querySelector("#refresh-token");
 
@@ -58,7 +59,6 @@ const authSpotify = () => {
   };
 
   const exchangeToken = (code) => {
-    console.log(code);
     const code_verifier = localStorage.getItem("code_verifier");
 
     fetch("https://accounts.spotify.com/api/token", {
@@ -136,8 +136,6 @@ const getArtistTopTracks = async (id) => {
 
     tracks.forEach((track, index) => {
       if (index >= 4) return;
-
-      console.log(track.uri);
 
       const trackContainer = document.createElement("div");
       trackContainer.classList.add("track-container");
@@ -223,7 +221,27 @@ const searchArtist = async (search) => {
     );
     const { artists, albums } = await response.json();
 
+    // Save artist to local storage
+    let recentSearch = JSON.parse(localStorage.getItem("recentSearch")) || [];
+    const artist = {
+      name: artists.items[0].name,
+      image: artists.items[0].images[1].url,
+    };
+
+    if (recentSearch.length > 0) {
+      recentSearch = recentSearch.filter(
+        (recent) => recent.name !== artist.name
+      );
+    }
+
+    localStorage.setItem(
+      "recentSearch",
+      JSON.stringify([artist, ...recentSearch])
+    );
+
     getArtistTopTracks(artists.items[0].id);
+
+    resultContainer.innerHTML = "";
 
     const artistContainer = document.createElement("div");
     artistContainer.classList.add("artist-container");
@@ -249,6 +267,45 @@ const searchArtist = async (search) => {
     console.error(error);
   }
 };
+
+// Create recent search cards
+const recentlySearched = JSON.parse(localStorage.getItem("recentSearch")) || [];
+if (recentlySearched.length > 0) {
+  const containerTitle = document.createElement("h1");
+  containerTitle.textContent = "Recently searched";
+  containerTitle.classList.add("section-title");
+
+  const recentCardsContainer = document.createElement("div");
+  recentCardsContainer.classList.add("recent-cards-container");
+
+  recentlySearched.forEach((artist) => {
+    const card = document.createElement("div");
+    card.classList.add(
+      "artist-container",
+      "artist-profile-container",
+      "recent-card"
+    );
+
+    const imgContainer = document.createElement("div");
+    imgContainer.classList.add("recent-img-container");
+
+    const x = document.createElement("i");
+    x.classList.add("fa-solid", "fa-x", "recent-x");
+
+    const profileImg = document.createElement("img");
+    profileImg.classList.add("profile-img");
+    profileImg.src = artist.image;
+
+    const artistName = document.createElement("h3");
+    artistName.textContent = artist.name;
+
+    imgContainer.append(x, profileImg);
+    card.append(imgContainer, artistName);
+    recentCardsContainer.appendChild(card);
+  });
+
+  recentSearch.append(containerTitle, recentCardsContainer);
+}
 
 // Playback sdk
 window.onSpotifyWebPlaybackSDKReady = () => {
