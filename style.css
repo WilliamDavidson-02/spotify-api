@@ -1,20 +1,127 @@
 :root {
-  --primary-green: "#1DB954";
+  --primary-green: #1db954;
 
-  --secondary-black: "#000000";
-  --secondary-light-black: "#191414";
-  --secondary-white: "#ffffff";
+  --secondary-light-black: #181818;
+  --secondary-black: #121212;
+  --secondary-dark-black: #000000;
+  --secondary-white: #ffffff;
 
-  --neutral-light-gray: "#B2B2B2";
-  --neutral-gray: "#777777";
-  --neutral-dark-gray: "#535353";
+  --neutral-light-gray: #b2b2b2;
+  --neutral-gray: #777777;
+  --neutral-dark-gray: #535353;
 }
 
 * {
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--secondary-dark-black);
+  color: var(--secondary-white);
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+}
+
+input {
+  outline: none;
 }
 
 button {
   outline: none;
   cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+header {
+  background: var(--secondary-black);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-container {
+  display: flex;
+  gap: 16px;
+  padding: 8px 16px;
+  border-radius: 21px;
+  border: 1px solid var(--neutral-dark-gray);
+  background: var(--secondary-light-black);
+  width: fit-content;
+}
+
+.search-btn {
+  background: transparent;
+  border: none;
+  color: var(--neutral-dark-gray);
+  padding: 0;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  color: var(--secondary-white);
+}
+
+.search-input::placeholder {
+  color: var(--neutral-dark-gray);
+}
+
+.result-container {
+  max-width: 1000px;
+  padding: 24px;
+}
+
+.artist-container {
+  background: var(--secondary-black);
+  transition: ease-out 0.3s;
+  cursor: pointer;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  gap: 100px;
+}
+
+.play-icon {
+  margin-top: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  font-size: 1.5rem;
+  background: var(--primary-green);
+  color: var(--secondary-dark-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.play-icon i {
+  padding-left: 3px;
+}
+
+.artist-container:hover {
+  background: var(--secondary-light-black);
+  transition: ease-out 0.3s;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
+  box-shadow: var(--secondary-dark-black) 0px 5px 15px;
+  object-fit: cover;
+  object-position: center;
 }

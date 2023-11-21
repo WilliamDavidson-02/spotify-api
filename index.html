@@ -3,18 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <title>Spotify - Api</title>
   </head>
   <body>
-    <main>
-      <form id="search-form">
-        <label for="artist-input">Artist</label>
-        <input type="text" id="artist-input" name="artist-input" />
-        <button type="submit">Search</button>
+    <header>
+      <form id="search-form" class="search-form-container">
+        <div class="search-container">
+          <button class="search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <input
+            placeholder="Search ..."
+            class="search-input"
+            type="text"
+            id="artist-input"
+          />
+        </div>
       </form>
+      <button class="login" id="login">Login</button>
+    </header>
+    <main>
+      <section class="result-container" id="result-container"></section>
     </main>
 
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
