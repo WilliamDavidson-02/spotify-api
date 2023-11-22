@@ -86,6 +86,9 @@ function authSpotify() {
 
         // clear search query params in the url
         window.history.replaceState({}, document.title, "/");
+
+        // create player sdk
+        initPlaybackSdk();
       })
       .catch((error) => console.error(error));
   }
@@ -129,8 +132,14 @@ function authSpotify() {
 }
 
 function initPlaybackSdk() {
+  // Add cdn only when we have a access_token
+  const playbackSdkScript = document.createElement("script");
+  playbackSdkScript.src = "https://sdk.scdn.co/spotify-player.js";
+  document.body.appendChild(playbackSdkScript);
+
   window.onSpotifyWebPlaybackSDKReady = () => {
     const token = localStorage.getItem("access_token");
+    console.log("This is the token", { token });
     player = new Spotify.Player({
       name: "Client baserad utveckling Spotify",
       getOAuthToken: (cb) => {
@@ -416,5 +425,5 @@ controlNext.addEventListener("click", () => {
 });
 
 authSpotify();
-initPlaybackSdk();
+if (localStorage.getItem("access_token") !== null) initPlaybackSdk();
 createRecentlySearched();
