@@ -266,6 +266,41 @@ main {
   cursor: pointer;
 }
 
+.controls {
+  background: var(--secondary-light-black);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.controls-container {
+  display: flex;
+  gap: 16px;
+}
+
+.controls-container button {
+  font-size: 1.3rem;
+  background: var(--primary-green);
+  border: none;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.controls-container button:active {
+  transition: all 0.2s;
+  transform: scale(0.96) translateY(2px);
+}
+
+.fa-play {
+  padding-left: 3px;
+}
+
 @media (max-width: 850px) {
   .result-container {
     flex-direction: column;

@@ -4,9 +4,14 @@ const recentSearch = document.querySelector("#recent-search");
 const loginBtn = document.querySelector("#login");
 const refreshTokenBtn = document.querySelector("#refresh-token");
 
+const controlPrev = document.querySelector("#control-prev");
+const controlPlay = document.querySelector("#control-play");
+const controlNext = document.querySelector("#control-next");
+
 const clientId = "55dfa3213cc24efab317f71496074c13";
 const clientSecret = "36c0e5ddae2548b6a436665aadacd925";
 let deviceId = "";
+let player;
 
 const baseUrl = "https://api.spotify.com/v1";
 
@@ -125,7 +130,7 @@ function authSpotify() {
 function initPlaybackSdk() {
   window.onSpotifyWebPlaybackSDKReady = () => {
     const token = localStorage.getItem("access_token");
-    const player = new Spotify.Player({
+    player = new Spotify.Player({
       name: "Client baserad utveckling Spotify",
       getOAuthToken: (cb) => {
         cb(token);
@@ -187,7 +192,10 @@ function createArtistTopTracks(tracks) {
   const topTracksContainer = document.createElement("div");
   topTracksContainer.classList.add("top-tracks-container");
 
-  tracks.forEach((track) => {
+  let uris = [];
+
+  tracks.forEach((track, index) => {
+    uris.push(track.uri);
     const trackContainer = document.createElement("div");
     trackContainer.classList.add("track-container");
     trackContainer.addEventListener("click", () => {
@@ -197,7 +205,8 @@ function createArtistTopTracks(tracks) {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
         body: JSON.stringify({
-          uris: [track.uri],
+          uris,
+          offset: { position: index },
           position_ms: 0,
         }),
       });
@@ -223,7 +232,7 @@ function createArtistTopTracks(tracks) {
 
     track.artists.forEach((artist) => {
       const artistName = document.createElement("a");
-      artistName.href = artist.external_urls.Spotify;
+      artistName.href = artist.external_urls.spotify;
       artistName.textContent = artist.name;
       artistName.classList.add("artist-name-sm");
 
@@ -373,6 +382,18 @@ searchForm.addEventListener("submit", (ev) => {
   ev.preventDefault();
   const input = searchForm.querySelector("#artist-input");
   searchArtist(input.value);
+});
+
+controlPrev.addEventListener("click", () => {
+  player.previousTrack();
+});
+
+controlPlay.addEventListener("click", () => {
+  player.togglePlay();
+});
+
+controlNext.addEventListener("click", () => {
+  player.nextTrack();
 });
 
 authSpotify();
