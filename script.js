@@ -12,6 +12,7 @@ const clientId = "55dfa3213cc24efab317f71496074c13";
 const clientSecret = "36c0e5ddae2548b6a436665aadacd925";
 let deviceId = "";
 let player;
+let currentTrack = null;
 
 const baseUrl = "https://api.spotify.com/v1";
 
@@ -149,6 +150,15 @@ function initPlaybackSdk() {
       console.log("Device ID has gone offline", device_id);
     });
 
+    player.addListener(
+      "player_state_changed",
+      ({ track_window: { current_track } }) => {
+        console.log("Currently Playing", current_track);
+        togglePayingGreen(document.getElementById(current_track.id));
+      }
+    );
+
+    // Error
     player.addListener("initialization_error", ({ message }) => {
       console.error(message);
     });
@@ -188,6 +198,14 @@ function createSearchArtistCard(artist) {
   resultContainer.appendChild(artistContainer);
 }
 
+function togglePayingGreen(track) {
+  if (currentTrack !== null) {
+    currentTrack.classList.remove("playing-green");
+  }
+  track.classList.add("playing-green");
+  currentTrack = track;
+}
+
 function createArtistTopTracks(tracks) {
   const topTracksContainer = document.createElement("div");
   topTracksContainer.classList.add("top-tracks-container");
@@ -196,6 +214,11 @@ function createArtistTopTracks(tracks) {
 
   tracks.forEach((track, index) => {
     uris.push(track.uri);
+    const trackName = document.createElement("span");
+    trackName.classList.add("track-name");
+    trackName.textContent = track.name;
+    trackName.setAttribute("id", track.id); // for targeting the correct track on player state change.
+
     const trackContainer = document.createElement("div");
     trackContainer.classList.add("track-container");
     trackContainer.addEventListener("click", () => {
@@ -209,14 +232,10 @@ function createArtistTopTracks(tracks) {
           offset: { position: index },
           position_ms: 0,
         }),
-      });
+      }).then(() => togglePayingGreen(trackName));
     });
 
     const trackNameContainer = document.createElement("div");
-
-    const trackName = document.createElement("span");
-    trackName.classList.add("track-name");
-    trackName.textContent = track.name;
 
     const trackArtistsContainer = document.createElement("div");
     trackArtistsContainer.classList.add("track-artists-container");

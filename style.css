@@ -301,6 +301,10 @@ main {
   padding-left: 3px;
 }
 
+.playing-green {
+  color: var(--primary-green);
+}
+
 @media (max-width: 850px) {
   .result-container {
     flex-direction: column;
