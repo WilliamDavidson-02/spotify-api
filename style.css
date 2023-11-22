@@ -217,12 +217,22 @@ main {
   gap: 16px;
   text-align: center;
   flex-shrink: 0;
+  scroll-snap-align: start;
+  max-width: 182px;
+}
+
+.recent-card h3 {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .recent-cards-container {
   display: flex;
   gap: 16px;
   overflow-x: auto;
+  scroll-snap-type: x mandatory;
 }
 
 .recent-search {
@@ -254,4 +264,16 @@ main {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+@media (max-width: 850px) {
+  .result-container {
+    flex-direction: column;
+  }
+
+  .result-artist-container {
+    justify-content: space-between;
+    gap: 0;
+    width: 100%;
+  }
 }
