@@ -305,6 +305,33 @@ main {
   color: var(--primary-green);
 }
 
+.controls-blocks {
+  width: calc(100% / 3);
+  display: flex;
+  align-items: center;
+}
+
+.controls-blocks:nth-child(2) {
+  justify-content: center;
+}
+
+.controls-blocks:nth-child(3) {
+  justify-content: flex-end;
+}
+
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.volume-container button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--secondary-white);
+}
+
 @media (max-width: 850px) {
   .result-container {
     flex-direction: column;

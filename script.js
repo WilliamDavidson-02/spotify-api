@@ -3,6 +3,8 @@ const resultContainer = document.querySelector("#result-container");
 const recentSearch = document.querySelector("#recent-search");
 const loginBtn = document.querySelector("#login");
 const refreshTokenBtn = document.querySelector("#refresh-token");
+const volumeRange = document.querySelector("#volume");
+const volumeIcon = document.querySelector("#volume-icon");
 
 const controlPrev = document.querySelector("#control-prev");
 const controlPlay = document.querySelector("#control-play");
@@ -139,7 +141,6 @@ function initPlaybackSdk() {
 
   window.onSpotifyWebPlaybackSDKReady = () => {
     const token = localStorage.getItem("access_token");
-    console.log("This is the token", { token });
     player = new Spotify.Player({
       name: "Client baserad utveckling Spotify",
       getOAuthToken: (cb) => {
@@ -163,7 +164,7 @@ function initPlaybackSdk() {
       "player_state_changed",
       ({ track_window: { current_track } }) => {
         console.log("Currently Playing", current_track);
-        togglePayingGreen(document.getElementById(current_track.id));
+        togglePayingGreen(current_track.id);
       }
     );
 
@@ -207,12 +208,15 @@ function createSearchArtistCard(artist) {
   resultContainer.appendChild(artistContainer);
 }
 
-function togglePayingGreen(track) {
-  if (currentTrack !== null) {
-    currentTrack.classList.remove("playing-green");
+function togglePayingGreen(trackId) {
+  const track = document.getElementById(trackId);
+  const prevTrack = document.getElementById(currentTrack);
+
+  if (prevTrack !== null) {
+    prevTrack.classList.remove("playing-green");
   }
   track.classList.add("playing-green");
-  currentTrack = track;
+  currentTrack = trackId;
 }
 
 function createArtistTopTracks(tracks) {
@@ -225,6 +229,9 @@ function createArtistTopTracks(tracks) {
     uris.push(track.uri);
     const trackName = document.createElement("span");
     trackName.classList.add("track-name");
+    if (track.id === currentTrack) {
+      trackName.classList.add("playing-green");
+    }
     trackName.textContent = track.name;
     trackName.setAttribute("id", track.id); // for targeting the correct track on player state change.
 
@@ -241,7 +248,7 @@ function createArtistTopTracks(tracks) {
           offset: { position: index },
           position_ms: 0,
         }),
-      }).then(() => togglePayingGreen(trackName));
+      }).then(() => togglePayingGreen(track.id));
     });
 
     const trackNameContainer = document.createElement("div");
@@ -263,6 +270,11 @@ function createArtistTopTracks(tracks) {
       artistName.href = artist.external_urls.spotify;
       artistName.textContent = artist.name;
       artistName.classList.add("artist-name-sm");
+      artistName.setAttribute("target", "_blank");
+
+      artistName.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+      });
 
       trackArtistsContainer.appendChild(artistName);
     });
@@ -422,6 +434,18 @@ controlPlay.addEventListener("click", () => {
 
 controlNext.addEventListener("click", () => {
   player.nextTrack();
+});
+
+volumeRange.addEventListener("input", () => {
+  const volume = parseInt(volumeRange.value);
+  if (volume === 0) {
+    volumeIcon.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+  } else if (volume <= 50) {
+    volumeIcon.innerHTML = '<i class="fa-solid fa-volume-low"></i>';
+  } else {
+    volumeIcon.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+  }
+  player.setVolume(volume / 100); // playback sdk volume ranges from 0 to 1.
 });
 
 authSpotify();
