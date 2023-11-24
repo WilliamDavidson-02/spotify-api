@@ -5,6 +5,7 @@ const loginBtn = document.querySelector("#login");
 const refreshTokenBtn = document.querySelector("#refresh-token");
 const volumeRange = document.querySelector("#volume");
 const volumeIcon = document.querySelector("#volume-icon");
+const currentTrackPlaying = document.querySelector("#current-track-playing");
 
 const controlPrev = document.querySelector("#control-prev");
 const controlPlay = document.querySelector("#control-play");
@@ -429,6 +430,10 @@ controlPrev.addEventListener("click", () => {
 });
 
 controlPlay.addEventListener("click", () => {
+  controlPlay.innerHTML = controlPlay.firstChild.classList.contains("fa-play")
+    ? '<i class="fa-solid fa-pause"></i>'
+    : '<i class="fa-solid fa-play"></i>';
+
   player.togglePlay();
 });
 
