@@ -166,6 +166,14 @@ function initPlaybackSdk() {
       ({ track_window: { current_track } }) => {
         console.log("Currently Playing", current_track);
         togglePayingGreen(current_track.id);
+        fetch(`${baseUrl}/tracks/${current_track.id}?market=ES`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => createCurrentTrack(data));
       }
     );
 
@@ -184,6 +192,49 @@ function initPlaybackSdk() {
 
     player.connect();
   };
+}
+
+function createCurrentTrack(track) {
+  currentTrackPlaying.innerHTML = "";
+
+  const trackImg = document.createElement("img");
+  trackImg.classList.add("track-cover-img");
+  trackImg.src = track.album.images[2].url;
+
+  const trackInfoContainer = document.createElement("div");
+
+  const trackName = document.createElement("div");
+  trackName.classList.add("track-name");
+  trackName.textContent = track.name;
+
+  const trackArtistsContainer = document.createElement("div");
+  trackArtistsContainer.classList.add("track-artists-container");
+
+  const explicit = document.createElement("div");
+  explicit.classList.add("explicit");
+  explicit.textContent = "E";
+  if (track.explicit) {
+    explicit.style.display = "none";
+  }
+
+  trackArtistsContainer.appendChild(explicit);
+
+  track.artists.forEach((artist) => {
+    const artistName = document.createElement("a");
+    artistName.href = artist.external_urls.spotify;
+    artistName.textContent = artist.name;
+    artistName.classList.add("artist-name-sm");
+    artistName.setAttribute("target", "_blank");
+
+    artistName.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+    });
+
+    trackArtistsContainer.appendChild(artistName);
+  });
+
+  trackInfoContainer.append(trackName, trackArtistsContainer);
+  currentTrackPlaying.append(trackImg, trackInfoContainer);
 }
 
 function createSearchArtistCard(artist) {
@@ -249,7 +300,10 @@ function createArtistTopTracks(tracks) {
           offset: { position: index },
           position_ms: 0,
         }),
-      }).then(() => togglePayingGreen(track.id));
+      }).then(() => {
+        togglePayingGreen(track.id);
+        controlPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
+      });
     });
 
     const trackNameContainer = document.createElement("div");
@@ -433,7 +487,6 @@ controlPlay.addEventListener("click", () => {
   controlPlay.innerHTML = controlPlay.firstChild.classList.contains("fa-play")
     ? '<i class="fa-solid fa-pause"></i>'
     : '<i class="fa-solid fa-play"></i>';
-
   player.togglePlay();
 });
 
