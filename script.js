@@ -164,7 +164,6 @@ function initPlaybackSdk() {
     player.addListener(
       "player_state_changed",
       ({ track_window: { current_track } }) => {
-        console.log("Currently Playing", current_track);
         togglePayingGreen(current_track.id);
         fetch(`${baseUrl}/tracks/${current_track.id}?market=ES`, {
           method: "GET",
@@ -275,6 +274,13 @@ function togglePayingGreen(trackId) {
   currentTrack = trackId;
 }
 
+function isTokenExpired() {
+  const expiresAt = parseInt(localStorage.getItem("expires_at"));
+  const currentTime = new Date().getTime();
+
+  return currentTime > expiresAt;
+}
+
 function createArtistTopTracks(tracks) {
   const topTracksContainer = document.createElement("div");
   topTracksContainer.classList.add("top-tracks-container");
@@ -282,7 +288,6 @@ function createArtistTopTracks(tracks) {
   let uris = [];
 
   tracks.forEach((track, index) => {
-    console.log(track);
     uris.push(track.uri);
     const trackName = document.createElement("span");
     trackName.classList.add("track-name");
@@ -295,6 +300,7 @@ function createArtistTopTracks(tracks) {
     const trackContainer = document.createElement("div");
     trackContainer.classList.add("track-container");
     trackContainer.addEventListener("click", () => {
+      if (isTokenExpired()) return;
       fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
         method: "PUT",
         headers: {
@@ -392,6 +398,8 @@ async function getArtistTopTracks(id) {
 }
 
 const searchArtist = async (search) => {
+  if (isTokenExpired()) return;
+
   try {
     const params = {
       method: "GET",
@@ -523,6 +531,18 @@ volumeRange.addEventListener("input", () => {
   }
   player.setVolume(volume / 100); // playback sdk volume ranges from 0 to 1.
 });
+
+// Clear all spotify auth tokens
+if (localStorage.getItem("access_token") !== null && isTokenExpired()) {
+  const authTokens = [
+    "access_token",
+    "refresh_token",
+    "expires_at",
+    "code_verifier",
+  ];
+
+  authTokens.forEach((token) => localStorage.removeItem(token));
+}
 
 authSpotify();
 if (localStorage.getItem("access_token") !== null) initPlaybackSdk();
