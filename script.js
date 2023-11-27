@@ -90,10 +90,13 @@ function authSpotify() {
       .then((data) => {
         processTokenResponse(data);
 
-        // clear search query params in the url
-        window.history.replaceState({}, document.title, "/");
-        // create player sdk
         initPlaybackSdk();
+
+        const url = new URL(window.location.href);
+
+        url.searchParams.delete("code");
+
+        window.location.href = url;
       })
       .catch((error) => console.error(error));
   }
@@ -109,7 +112,7 @@ function authSpotify() {
     localStorage.setItem("expires_at", expires_at);
   }
 
-  const refreshToken = () => {
+  function refreshToken() {
     fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
@@ -125,7 +128,7 @@ function authSpotify() {
       .then((data) => {
         processTokenResponse(data);
       });
-  };
+  }
 
   const args = new URLSearchParams(window.location.search);
   const code = args.get("code");
