@@ -18,10 +18,9 @@ let player;
 let currentTrack = null;
 
 const baseUrl = "https://api.spotify.com/v1";
-const redirectUri =
-  window.location.href === "http://127.0.0.1:5500/"
-    ? "http://127.0.0.1:5500/"
-    : "https://williamdavidson-02.github.io/spotify-api/";
+const redirectUri = window.location.href.startsWith("http://127.0.0.1:5500")
+  ? "http://127.0.0.1:5500/"
+  : "https://williamdavidson-02.github.io/spotify-api/";
 
 function authSpotify() {
   function generateRandomString(length) {
@@ -93,7 +92,6 @@ function authSpotify() {
 
         // clear search query params in the url
         window.history.replaceState({}, document.title, "/");
-
         // create player sdk
         initPlaybackSdk();
       })
