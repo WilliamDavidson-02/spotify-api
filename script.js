@@ -168,8 +168,11 @@ function initPlaybackSdk() {
 
     player.addListener(
       "player_state_changed",
-      ({ track_window: { current_track } }) => {
+      ({ track_window: { current_track }, paused }) => {
         togglePayingGreen(current_track.id);
+        controlPlay.innerHTML = !paused
+          ? '<i class="fa-solid fa-pause"></i>'
+          : '<i class="fa-solid fa-play"></i>';
         fetch(`${baseUrl}/tracks/${current_track.id}?market=ES`, {
           method: "GET",
           headers: {
@@ -316,9 +319,6 @@ function createArtistTopTracks(tracks) {
           offset: { position: index },
           position_ms: 0,
         }),
-      }).then(() => {
-        togglePayingGreen(track.id);
-        controlPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
       });
     });
 
@@ -515,9 +515,6 @@ controlPrev.addEventListener("click", () => {
 });
 
 controlPlay.addEventListener("click", () => {
-  controlPlay.innerHTML = controlPlay.firstChild.classList.contains("fa-play")
-    ? '<i class="fa-solid fa-pause"></i>'
-    : '<i class="fa-solid fa-play"></i>';
   player.togglePlay();
 });
 
