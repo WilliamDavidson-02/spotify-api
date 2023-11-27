@@ -362,6 +362,13 @@ input[type="range"]::-webkit-slider-thumb {
   margin-right: 16px;
 }
 
+.current-track-info {
+  min-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 850px) {
   .result-container {
     flex-direction: column;

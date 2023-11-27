@@ -202,6 +202,7 @@ function createCurrentTrack(track) {
   trackImg.src = track.album.images[2].url;
 
   const trackInfoContainer = document.createElement("div");
+  trackInfoContainer.classList.add("current-track-info");
 
   const trackName = document.createElement("div");
   trackName.classList.add("track-name");
@@ -219,10 +220,13 @@ function createCurrentTrack(track) {
 
   trackArtistsContainer.appendChild(explicit);
 
-  track.artists.forEach((artist) => {
+  track.artists.forEach((artist, idx) => {
     const artistName = document.createElement("a");
     artistName.href = artist.external_urls.spotify;
-    artistName.textContent = artist.name;
+    artistName.textContent =
+      track.artists.length > 1 && idx !== track.artists.length - 1
+        ? `${artist.name}, `
+        : artist.name;
     artistName.classList.add("artist-name-sm");
     artistName.setAttribute("target", "_blank");
 
@@ -278,6 +282,7 @@ function createArtistTopTracks(tracks) {
   let uris = [];
 
   tracks.forEach((track, index) => {
+    console.log(track);
     uris.push(track.uri);
     const trackName = document.createElement("span");
     trackName.classList.add("track-name");
@@ -308,6 +313,14 @@ function createArtistTopTracks(tracks) {
 
     const trackNameContainer = document.createElement("div");
 
+    const trackInfoContainer = document.createElement("div");
+    trackInfoContainer.style.display = "flex";
+
+    const albumCover = document.createElement("img");
+    albumCover.src = track.album.images[2].url;
+    albumCover.style.maxHeight = "43px";
+    albumCover.style.marginRight = "16px";
+
     const trackArtistsContainer = document.createElement("div");
     trackArtistsContainer.classList.add("track-artists-container");
 
@@ -320,10 +333,13 @@ function createArtistTopTracks(tracks) {
 
     trackArtistsContainer.appendChild(explicit);
 
-    track.artists.forEach((artist) => {
+    track.artists.forEach((artist, idx) => {
       const artistName = document.createElement("a");
       artistName.href = artist.external_urls.spotify;
-      artistName.textContent = artist.name;
+      artistName.textContent =
+        track.artists.length > 1 && idx !== track.artists.length - 1
+          ? `${artist.name}, `
+          : artist.name;
       artistName.classList.add("artist-name-sm");
       artistName.setAttribute("target", "_blank");
 
@@ -348,7 +364,8 @@ function createArtistTopTracks(tracks) {
     ).padStart(2, "0")}`;
 
     trackNameContainer.append(trackName, trackArtistsContainer);
-    trackContainer.append(trackNameContainer, trackDuration);
+    trackInfoContainer.append(albumCover, trackNameContainer);
+    trackContainer.append(trackInfoContainer, trackDuration);
     topTracksContainer.appendChild(trackContainer);
   });
   resultContainer.appendChild(topTracksContainer);
