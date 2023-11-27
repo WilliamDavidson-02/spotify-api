@@ -61,7 +61,7 @@ function authSpotify() {
             "user-read-private user-read-email streaming user-library-read",
           code_challenge_method: "S256",
           code_challenge,
-          redirect_uri: "http://127.0.0.1:5500/",
+          redirect_uri: window.location.href,
         }
       );
     });
@@ -79,7 +79,7 @@ function authSpotify() {
         client_id: clientId,
         grant_type: "authorization_code",
         code,
-        redirect_uri: "http://127.0.0.1:5500/",
+        redirect_uri: window.location.href,
         code_verifier,
       }),
     })
