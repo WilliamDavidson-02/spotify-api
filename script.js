@@ -18,6 +18,10 @@ let player;
 let currentTrack = null;
 
 const baseUrl = "https://api.spotify.com/v1";
+const redirectUri =
+  window.location.href === "http://127.0.0.1:5500/"
+    ? "http://127.0.0.1:5500/"
+    : "https://williamdavidson-02.github.io/spotify-api/";
 
 function authSpotify() {
   function generateRandomString(length) {
@@ -61,7 +65,7 @@ function authSpotify() {
             "user-read-private user-read-email streaming user-library-read",
           code_challenge_method: "S256",
           code_challenge,
-          redirect_uri: window.location.href,
+          redirect_uri: redirectUri,
         }
       );
     });
@@ -79,7 +83,7 @@ function authSpotify() {
         client_id: clientId,
         grant_type: "authorization_code",
         code,
-        redirect_uri: window.location.href,
+        redirect_uri: redirectUri,
         code_verifier,
       }),
     })
