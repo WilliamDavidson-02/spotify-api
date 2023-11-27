@@ -312,6 +312,7 @@ function createArtistTopTracks(tracks) {
     });
 
     const trackNameContainer = document.createElement("div");
+    trackNameContainer.classList.add("current-track-info", "top-track-width");
 
     const trackInfoContainer = document.createElement("div");
     trackInfoContainer.style.display = "flex";

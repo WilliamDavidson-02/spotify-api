@@ -60,6 +60,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 100px;
 }
 
 .search-container {
@@ -369,6 +370,10 @@ input[type="range"]::-webkit-slider-thumb {
   text-overflow: ellipsis;
 }
 
+.top-track-width {
+  max-width: 230px;
+}
+
 @media (max-width: 850px) {
   .result-container {
     flex-direction: column;
@@ -378,5 +383,25 @@ input[type="range"]::-webkit-slider-thumb {
     justify-content: space-between;
     gap: 0;
     width: 100%;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .controls-blocks {
+    width: 100%;
+    justify-content: center !important;
+  }
+
+  main {
+    margin-bottom: 200px;
+  }
+
+  .header-auth-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
