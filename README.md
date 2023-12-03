@@ -1,6 +1,6 @@
 # spotify-api
 
-<img src="https://media4.giphy.com/media/lvOnlEYunAwOkHjgmU/giphy.gif?cid=ecf05e47330ug16cqq85a5i9u6oyti7imsgijqjycelmvwt6&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Spotify"/>
+<img src="https://i.giphy.com/media/lvOnlEYunAwOkHjgmU/giphy.webp" alt="Spotify"/>
 
 This is a small spotify api project that allows you to search for an artist and play there top 4 songs.
 
